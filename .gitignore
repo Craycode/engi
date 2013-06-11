@@ -1,0 +1,4 @@
+/vendor/
+/objects/*
+composer.lock
+/db/*
