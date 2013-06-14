@@ -1,4 +1,4 @@
 /vendor/
 /objects/*
-composer.lock
+/composer.lock
 /db/*
