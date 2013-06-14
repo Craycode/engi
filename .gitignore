@@ -1,4 +1,4 @@
 /vendor/
-/objects/*
-/composer.lock
-/db/*
+/resources
+composer.lock
+/nbproject
