@@ -5,15 +5,15 @@
  */
 if (!ini_get('date.timezone'))
 {
-	date_default_timezone_set('Europe/London');
+    date_default_timezone_set('Europe/London');
 }
 
 /**
  * Definitions.
  */
-define('PATH_APPLICATION', realpath(__DIR__.DIRECTORY_SEPARATOR.'../'));
-define('PATH_SRC', PATH_APPLICATION.DIRECTORY_SEPARATOR.'src');
-define('PATH_CLASSES', PATH_SRC.DIRECTORY_SEPARATOR.'classes/');
+define('PATH_APPLICATION', realpath(__DIR__ . DIRECTORY_SEPARATOR . '../'));
+define('PATH_SRC', PATH_APPLICATION . DIRECTORY_SEPARATOR . 'src');
+define('PATH_CLASSES', PATH_SRC . DIRECTORY_SEPARATOR . 'classes/');
 
 /**
  * Require autoloader.
