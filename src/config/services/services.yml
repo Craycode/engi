@@ -20,18 +20,19 @@ services:
   delegating_loader_factory:
     class: Engi\Components\ConfigLoader\DelegatingLoaderFactory
 
-  configuration_app:
+  delegated_configuration:
     class: Symfony\Component\Config\Loader\DelegatingLoader
     factory_service: delegating_loader_factory
     factory_method: get
+
+  configuration_app:
+    parent: delegated_configuration
     arguments:
       - %config.files.app%
       - @loader_resolver
 
   configuration_db:
-    class: Symfony\Component\Config\Loader\DelegatingLoader
-    factory_service: delegating_loader_factory
-    factory_method: get
+    parent: delegated_configuration
     arguments:
       - %config.files.db%
       - @loader_resolver
