@@ -1,0 +1,50 @@
+imports:
+  - { resource: parameters.yml }
+
+services:
+  file_locator:
+    class: Symfony\Component\Config\FileLocator
+    arguments:
+      - %config.paths%
+
+  yaml_settings_loader:
+    class: Engi\Components\ConfigLoader\YamlSettingsLoader
+    arguments:
+      - @file_locator
+
+  loader_resolver:
+    class: Symfony\Component\Config\Loader\LoaderResolver
+    arguments:
+      - [@yaml_settings_loader]
+
+  delegating_loader_factory:
+    class: Engi\Components\ConfigLoader\DelegatingLoaderFactory
+
+  configuration_app:
+    class: Symfony\Component\Config\Loader\DelegatingLoader
+    factory_service: delegating_loader_factory
+    factory_method: get
+    arguments:
+      - %config.files.app%
+      - @loader_resolver
+
+  configuration_db:
+    class: Symfony\Component\Config\Loader\DelegatingLoader
+    factory_service: delegating_loader_factory
+    factory_method: get
+    arguments:
+      - %config.files.db%
+      - @loader_resolver
+
+  configuration_definition:
+    class: Engi\Components\Configuration
+
+  processor:
+    class: Symfony\Component\Config\Definition\Processor
+
+  configuration:
+    class: Engi\Components\Config
+    arguments:
+      - @processor
+      - @configuration_definition
+      - [@configuration_app, @configuration_db]

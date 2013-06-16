@@ -1,2 +1,13 @@
 parameters:
-    app.name: Engi
+    # Directry separator
+    server.separator: /
+    # Application path
+    app.path: J:\wamp\www\engi
+
+    # Do not change
+    app.path.src: %app.path%%server.separator%src
+    config.paths:
+      - %app.path.src%%server.separator%config
+      - %app.path.src%%server.separator%config%server.separator%services
+    config.files.app: app.yml
+    config.files.db: db.yml

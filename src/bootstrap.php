@@ -1,5 +1,7 @@
 <?php
 
+namespace Engi;
+
 /**
  * Set the default time zone.
  */
@@ -21,16 +23,11 @@ define('PATH_CONFIG', PATH_SRC . DIRECTORY_SEPARATOR . 'config');
  */
 require 'vendor/autoload.php';
 
-use Engi\Components\ConfigLoader\YamlConfigLoader;
-use Doctrine\ORM\Tools\Setup;
-use Doctrine\ORM\EntityManager;
+use Engi\Components\DependencyInjection\ServicesExtension;
+use Engi\Components\DependencyInjection\ServiceContainer;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
-use Symfony\Component\Config;
-use Symfony\Component\Config\Loader\LoaderResolver;
-use Symfony\Component\Config\Loader\DelegatingLoader;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\DependencyInjection;
-use Symfony\Component\EventDispatcher;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 /**
  * Class loading.
@@ -45,19 +42,31 @@ $loader->register(true);
 unset($loader);
 
 /**
- * Config component.
+ * Paths to configuration files.
  */
 $configPaths = array(
     PATH_CONFIG,
+    PATH_CONFIG . DIRECTORY_SEPARATOR . 'services',
 );
 
-$configLocator = new Config\FileLocator($configPaths);
-$yamlConfigLoader = new YamlConfigLoader($configLocator);
+/**
+ * Build and compile dependency injection container.
+ */
+$container = new ContainerBuilder(new ParameterBag($_SERVER));
 
-// Use list of defined config loaders.
-$configLoaders = array(
-    $yamlConfigLoader,
-);
+// Register extensions.
+$extension = new ServicesExtension($configPaths);
+$container->registerExtension($extension);
 
-$configLoaderResolver = new LoaderResolver($configLoaders);
-$delegatingConfigLoader = new DelegatingLoader($configLoaderResolver);
+// Load extensions.
+$container->loadFromExtension($extension->getAlias());
+
+// Compile container.
+$container->compile();
+ServiceContainer::set($container);
+
+/**
+ * Set application configuration.
+ */
+$config = ServiceContainer::get()->get('configuration');
+Application::$config = $config->get();

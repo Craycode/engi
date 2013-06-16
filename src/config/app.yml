@@ -1,5 +1,5 @@
 imports:
     - { resource: parameters.yml }
 
-db:
-    name: engi
+app:
+    name: Engi

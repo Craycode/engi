@@ -14,22 +14,28 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2013 Piotr Suwik 
  * @license   Proprietary
  */
-class YamlConfigLoader extends FileLoader
+class YamlSettingsLoader extends FileLoader
 {
-
     /**
      * {@inheritdoc}
      */
     public function load($resource, $type = null)
     {
-        return Yaml::parse($this->locator->locate($resource));
-    }
+        $config = Yaml::parse($this->locator->locate($resource));
 
+        // Remove imports section.
+        unset($config['imports']);
+
+        return $config;
+    }
     /**
      * {@inheritdoc}
      */
     public function supports($resource, $type = null)
     {
-        return is_string($resource) && 'yml' === pathinfo($resource, PATHINFO_EXTENSION);
+        return
+            is_string($resource) &&
+            'yml' === pathinfo($resource, PATHINFO_EXTENSION) &&
+            FALSE === strpos(pathinfo($resource, PATHINFO_DIRNAME), 'services');
     }
 }
