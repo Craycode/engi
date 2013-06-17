@@ -38,7 +38,6 @@ class Configuration implements ConfigurationInterface
             ->end();
 
         $rootNode
-            ->children()
             ->append($appNode)
             ->append($dbNode)
             ->end();
