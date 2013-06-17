@@ -28,6 +28,7 @@ use Engi\Components\DependencyInjection\ServiceContainer;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
 /**
  * Class loading.
@@ -50,7 +51,7 @@ $configPaths = array(
 );
 
 /**
- * Build and compile dependency injection container.
+ * Dependency injection container.
  */
 $container = new ContainerBuilder(new ParameterBag($_SERVER));
 
@@ -70,3 +71,14 @@ ServiceContainer::set($container);
  */
 $config = ServiceContainer::get()->get('configuration');
 Application::$config = $config->get();
+
+/**
+ * Event Dispatcher.
+ */
+$dispatcher = new ContainerAwareEventDispatcher($container);
+
+// Add subscribers.
+$dispatcher->addSubscriberService('subscriber_config', 'Engi\Subscribers\ConfigSubscriber');
+$dispatcher->addSubscriberService('subscriber_world', 'Engi\Subscribers\WorldSubscriber');
+
+Application::$dispatcher = $dispatcher;

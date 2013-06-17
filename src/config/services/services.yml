@@ -49,3 +49,9 @@ services:
       - @processor
       - @configuration_definition
       - [@configuration_app, @configuration_db]
+
+  subscriber_config:
+    class: Engi\Subscribers\ConfigSubscriber
+
+  subscriber_world:
+    class: Engi\Subscribers\WorldSubscriber

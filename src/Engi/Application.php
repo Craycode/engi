@@ -20,4 +20,11 @@ class Application
      */
     public static $config = null;
 
+    /**
+     * Event Dispatcher.
+     * 
+     * @var \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+     */
+    public static $dispatcher = null;
+
 }
