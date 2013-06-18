@@ -24,11 +24,9 @@ define('PATH_CONFIG', PATH_SRC . DIRECTORY_SEPARATOR . 'config');
 require 'vendor/autoload.php';
 
 use Engi\Components\DependencyInjection\ServicesExtension;
-use Engi\Components\DependencyInjection\ServiceContainer;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
 /**
  * Class loading.
@@ -64,21 +62,5 @@ $container->loadFromExtension($extension->getAlias());
 
 // Compile container.
 $container->compile();
-ServiceContainer::set($container);
 
-/**
- * Set application configuration.
- */
-$config = ServiceContainer::get()->get('configuration');
-Application::$config = $config->get();
-
-/**
- * Event Dispatcher.
- */
-$dispatcher = new ContainerAwareEventDispatcher($container);
-
-// Add subscribers.
-$dispatcher->addSubscriberService('subscriber_config', 'Engi\Subscribers\ConfigSubscriber');
-$dispatcher->addSubscriberService('subscriber_world', 'Engi\Subscribers\WorldSubscriber');
-
-Application::$dispatcher = $dispatcher;
+return $container;

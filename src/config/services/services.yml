@@ -55,3 +55,14 @@ services:
 
   subscriber_world:
     class: Engi\Subscribers\WorldSubscriber
+
+  event_dispatcher:
+    class: Symfony\Component\EventDispatcher\EventDispatcher
+    calls:
+      - [addSubscriber, [@subscriber_world]]
+      - [addSubscriber, [@subscriber_config]]
+
+  application:
+    class: Engi\Application
+    arguments:
+      - @service_container

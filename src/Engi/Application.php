@@ -2,8 +2,11 @@
 
 namespace Engi;
 
+use Engi\Events\World\WorldEvents;
+use Engi\Events\World\LoadEvent;
+
 /**
- * Application helper.
+ * Application class.
  *
  * @package   Engi
  * @category  Classes
@@ -13,6 +16,23 @@ namespace Engi;
  */
 class Application
 {
+    /**
+     * Service container.
+     * 
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
+     */
+    public $container;
+
+    /**
+     * Constructor.
+     * 
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     */
+    public function __construct(\Symfony\Component\DependencyInjection\ContainerBuilder $container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Configuration array.
      * 
@@ -26,5 +46,17 @@ class Application
      * @var \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public static $dispatcher = null;
+
+    /**
+     * Run the application.
+     * 
+     * @return void
+     */
+    public function run()
+    {
+        print_r('Running..'."\n");
+        $world = new Components\World();
+        $this->container->get('event_dispatcher')->dispatch(WorldEvents::LOAD, new LoadEvent($world));
+    }
 
 }
