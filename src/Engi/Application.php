@@ -2,8 +2,7 @@
 
 namespace Engi;
 
-use Engi\Events\World\WorldEvents;
-use Engi\Events\World\LoadEvent;
+use Symfony\Component\Console\Application as SymfonyApplication;
 
 /**
  * Application class.
@@ -14,26 +13,9 @@ use Engi\Events\World\LoadEvent;
  * @copyright 2013 Piotr Suwik 
  * @license   Proprietary
  */
-class Application
+class Application extends SymfonyApplication
 {
-    /**
-     * Service container.
-     * 
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
-    public $container;
-
-    /**
-     * Constructor.
-     * 
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     */
-    public function __construct(\Symfony\Component\DependencyInjection\ContainerBuilder $container)
-    {
-        $this->container = $container;
-    }
-
-    /**
+	/**
      * Configuration array.
      * 
      * @var array
@@ -41,22 +23,30 @@ class Application
     public static $config = null;
 
     /**
-     * Event Dispatcher.
+     * Service container.
      * 
-     * @var \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    public static $dispatcher = null;
+    protected $_container;
 
     /**
-     * Run the application.
+     * Constructor.
      * 
-     * @return void
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
-    public function run()
+    public function __construct(\Symfony\Component\DependencyInjection\ContainerBuilder $container, $name = "Unknown", $version = "Unknown")
     {
-        print_r('Running..'."\n");
-        $world = new Components\World();
-        $this->container->get('event_dispatcher')->dispatch(WorldEvents::LOAD, new LoadEvent($world));
+		parent::__construct($name, $version);
+        $this->_container = $container;
     }
-
+	
+	/**
+	 * Get the service container.
+	 * 
+	 * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+	 */
+	public function getContainer()
+	{
+		return $this->_container;
+	}
 }
