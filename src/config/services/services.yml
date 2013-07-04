@@ -113,6 +113,9 @@ services:
       - [addArgument, [%app.command.name.argument%, 1]]
       - [ignoreValidationErrors]
 
+##
+# COMMAND DECLARATION.
+##
   command_hello:
     parent: application_command
     class: Engi\Components\Application\Commands\HelloCommand
@@ -122,6 +125,9 @@ services:
       - [setDescription, [Display hello message]]
       - [addArgument, [name, 2]]
 
+##
+# COMMAND INSERTION.
+##
   application_command_list:
     class: Engi\Components\Application\ApplicationCommandList
     calls:
