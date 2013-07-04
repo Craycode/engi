@@ -22,6 +22,11 @@ class ApplicationCommandList
 	 */
 	public function addCommand(ApplicationCommand $command)
 	{
+		if ( isset ($this->_commands[$command->getName()]))
+		{
+			throw new \ErrorException(sprintf('Duplicated command added to the list: %s', $command->getName()));
+		}
+
 		$this->_commands[$command->getName()] = $command;
 	}
 
