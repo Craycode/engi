@@ -67,7 +67,7 @@ services:
     arguments:
       - @service_container
       - %app.name%
-      - 1.0
+      - %app.version%
     calls:
       - [add, [@run_command]]
       - [setAutoExit, [false]]
@@ -109,6 +109,8 @@ services:
 
   application_command:
     class: Engi\Components\Application\ApplicationCommand
+    arguments:
+      - @service_container
     calls:
       - [addArgument, [%app.command.name.argument%, 1]]
       - [ignoreValidationErrors]

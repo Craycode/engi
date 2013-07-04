@@ -5,7 +5,7 @@ parameters:
     # Application settings
     app.path: J:\wamp\www\engi
     app.name: Engi
-    app.version: 1.0
+    app.version: 1.0.1
     app.command.name.argument: command_name
 
     # Do not change
